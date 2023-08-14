@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Calculator</title>
+        <link rel="stylesheet" href="./style.css" />
+    </head>
+
+    <body>
+        <div class="card">
+            <div class="card-header">
+                <input type="text" name="result" id="result" />
+            </div>
+
+            <div class="card-body mt-3">
+                <div class="d-grid grid-cols-4 gap-3">
+                    <input id="power-btn" type="button" class="btn btn-warning" value="Off" onclick="power(this)" />
+                    <input type="button" class="btn btn-warning" value="AC" onclick="clearDisplay()"/>
+                    <input type="button" class="btn btn-warning" value="%" onclick="addDegit(this)" />
+                    <input type="button" class="btn btn-warning" value="/" onclick="addDigit(this)" />
+
+                    <input id="btnseven" type="button" class="btn" value="7" onclick="addDegit(this);" />
+                    <input id="btneight" type="button" class="btn" value="8" onclick="addDegit(this);" />
+                    <input type="button" class="btn" value="9" onclick="addDegit(this);" />
+                    <input type="button" class="btn btn-warning" value="*" onclick="addDegit(this);" />
+
+                    <input type="button" class="btn" value="4" onclick="addDegit(this);" />
+                    <input type="button" class="btn" value="5" onclick="addDegit(this);" />
+                    <input type="button" class="btn" value="6" onclick="addDegit(this);" />
+                    <input type="button" class="btn btn-warning" value="-" onclick="addDegit(this);" />
+
+                    <input type="button" class="btn" value="1" onclick="addDegit(this);" />
+                    <input type="button" class="btn" value="2" onclick="addDegit(this);" />
+                    <input type="button" class="btn" value="3" onclick="addDegit(this);" />
+                    <input type="button" class="btn btn-warning" value="+" onclick="addDegit(this);" />
+
+                    <input type="button" class="btn" value="0" onclick="addDegit(this);" />
+                    <input type="button" class="btn" value="." onclick="addDegit(this);" />
+                    <input type="button" class="btn btn-danger" value="Del" onclick="deleteDigit()" />
+                    <input type="button" class="btn btn-success" value="=" onclick="calculation()" />
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function power(element) {
+                let action = element.value
+            
+            if(action == 'Off') {
+                document.getElementById('result').setAttribute('disabled', true);
+                document.querySelectorAll('.btn').forEach(function (btn) {
+                    if (btn.id == 'power-btn'){
+                        return;
+                    }
+                    btn.setAttribute('disabled', true);
+                })
+                
+                document.getElementById('result').value = '';
+                element.value = 'ON'
+
+            }
+            else {
+                document.getElementById('result').removeAttribute('disabled');
+                document.querySelectorAll('.btn').forEach(function (btn) {
+                    btn.removeAttribute('disabled');
+                });
+
+                element.value = 'Off'
+
+            }
+		
+            }
+		 
+            function addDegit(element) {
+                if(document.getElementById('result').hasAttribute('disabled')) {
+                    return false;
+                }
+                document.getElementById('result').value += element.getAttribute('value');
+
+            }
+            function clearDisplay(element) {
+                document.getElementById('result').value = '';
+            }
+
+            function calculation() {
+               
+                let value = document.getElementById('result').value;
+                if(!value){
+                    return false;
+                }
+
+                document.getElementById('result').value = new Function(value)();
+            }
+             
+            function deleteDigit() {
+                let value = document.getElementById('result').value;
+                if(!value){
+                    return false;
+                }
+                document.getElementById('result').value = value.slice(0, -1);
+        
+            }
+
+            document.getElementById('result').addEventListener('keypress', function(event) {
+                const charCode = event.which || event.keyCode;
+                const charStr = String.fromCharCode(charCode);
+                
+
+                // Allow digits (0-9) and arithmetic operators (+, -, *, /)
+                if (!/[\d+\-%*/]/.test(charStr)) {
+                    event.preventDefault();
+                }
+
+                
+    
+           if (event.key === 'Enter') {
+                   calculation();
+                }
+            });
+
+            
+
+
+
+
+        </script>
+    </body>
+</html>
